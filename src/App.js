@@ -1,7 +1,6 @@
 import TodoCounter from './components/TodoCounter';
 import TodoContent from './components/TodoContent';
 import TodoList from './components/TodoList';
-import TodoItem from './components/TodoItem';
 import CreateTodoButton from './components/CreateTodoButton';
 import TodoNav from './components/TodoNav';
 import TodoBackground from './components/TodoBackground';
@@ -27,15 +26,7 @@ function App() {
       <TodoNav />
       <TodoContent>
         <TodoCounter todos={todoTasks} />
-        <TodoList>
-          {todoTasks.map((todo) => (
-            <TodoItem
-              key={todo.id}
-              description={todo.description}
-              status={todo.status}
-            />
-          ))}
-        </TodoList>
+        <TodoList todos={todoTasks} setTodos={setTodoTasks} />
       </TodoContent>
       <CreateTodoButton />
     </TodoBackground>

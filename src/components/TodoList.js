@@ -1,21 +1,6 @@
-import { useState, useEffect } from 'react';
-import { getData } from '../data';
 import TodoItem from './TodoItem';
 
-const TodoList = () => {
-  const [todos, setTodos] = useState([]);
-
-  useEffect(() => {
-    fetchTodos();
-  }, []);
-
-  const fetchTodos = async () => {
-    const result = await getData();
-    if (result !== 'error') {
-      setTodos(result.data);
-    }
-  };
-
+const TodoList = ({ todos, setTodos }) => {
   const handleStatusChange = (id, newStatus) => {
     setTodos((prevTodos) =>
       prevTodos.map((todo) =>

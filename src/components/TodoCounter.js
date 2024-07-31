@@ -1,24 +1,7 @@
-import { useState, useEffect } from 'react';
 import { Progress } from 'flowbite-react';
-import { getData } from '../data';
 
-const TodoCounter = () => {
-  const [todos, setTodos] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchTodos = async () => {
-      const result = await getData();
-      if (result !== 'error') {
-        setTodos(result.data);
-      }
-      setLoading(false);
-    };
-
-    fetchTodos();
-  }, []);
-
-  if (loading) {
+const TodoCounter = ({ todos }) => {
+  if (!todos) {
     return <div>Cargando...</div>;
   }
 
