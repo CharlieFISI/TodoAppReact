@@ -7,7 +7,7 @@ const today = new Date().toLocaleDateString('es-ES', {
 
 const TodoContent = ({ children }) => {
   return (
-    <div className="flex h-screen w-screen flex-1 flex-col bg-gray-100 px-32 py-14">
+    <div className="flex h-screen w-screen flex-1 flex-col bg-gray-100 px-40 py-14">
       <p className="font-inter text-3xl font-semibold">Mis tareas</p>
       <p className="font-inter text-lg text-gray-500">Hoy es {today}</p>
       {children}
