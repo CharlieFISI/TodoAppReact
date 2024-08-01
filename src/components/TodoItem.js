@@ -1,4 +1,5 @@
-import { Checkbox, Label } from 'flowbite-react';
+import { Button, Checkbox, Label, Dropdown } from 'flowbite-react';
+import { FaEllipsisH, FaBars, FaEdit, FaTrashAlt } from 'react-icons/fa';
 import { updateTodoStatus } from '../data';
 
 const TodoItem = (props) => {
@@ -20,22 +21,39 @@ const TodoItem = (props) => {
   return (
     <li>
       <div
-        className={`my-1 flex w-[30vw] items-center justify-items-start break-words rounded-md bg-white px-5 py-2 shadow-sm ${completedClass}`}
+        className={`my-1 flex w-full items-center justify-between break-words rounded-md bg-white py-1 pl-px pr-2.5 shadow-sm ${completedClass}`}
       >
-        <Checkbox
-          className="mr-2 focus:ring-transparent"
-          defaultChecked={props.status === 'completed'}
-          onChange={handleCheckboxChange}
-        />
-        <Label className="max-w-[calc(100%-40px)] break-words">
-          {props.description}
-        </Label>
-        <button className="size-5 cursor-pointer border-none bg-transparent text-lg font-bold text-red-600 hover:text-red-700">
-          X
-        </button>
-        <button className="ml-2 cursor-pointer border-none bg-transparent text-lg font-bold text-gray-600 hover:text-gray-700">
-          ...
-        </button>
+        <div className="flex items-center">
+          <Button
+            as="span"
+            className="cursor-pointer border-none bg-transparent text-lg font-bold text-gray-600 hover:text-gray-700"
+          >
+            <FaBars />
+          </Button>
+          <Checkbox
+            className="mr-2 focus:ring-transparent"
+            defaultChecked={props.status === 'completed'}
+            onChange={handleCheckboxChange}
+          />
+          <Label className="relative -top-px max-w-[calc(100%-40px)] break-words">
+            {props.description}
+          </Label>
+        </div>
+        <Dropdown
+          label={<FaEllipsisH />}
+          dismissOnClick={false}
+          placement="right-start"
+          inline
+          arrowIcon={false}
+          className="ml-2"
+        >
+          <Dropdown.Item icon={FaEdit} onClick={() => alert('Editando')}>
+            Editar
+          </Dropdown.Item>
+          <Dropdown.Item icon={FaTrashAlt} onClick={() => alert('Eliminando')}>
+            Eliminar
+          </Dropdown.Item>
+        </Dropdown>
       </div>
     </li>
   );
