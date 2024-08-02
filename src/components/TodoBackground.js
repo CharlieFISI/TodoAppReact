@@ -1,6 +1,6 @@
 const TodoBackground = ({ children }) => {
   return (
-    <div className="flex h-screen w-screen flex-row flex-wrap items-center">
+    <div className="flex size-full flex-row flex-wrap items-center overflow-hidden">
       {children}
     </div>
   );
