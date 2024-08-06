@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Sidebar } from 'flowbite-react';
+import { Sidebar, TextInput } from 'flowbite-react';
 import {
   FaBook,
   FaCheck,
@@ -29,13 +29,12 @@ const TodoNav = () => {
           </Sidebar.Logo>
           <Sidebar.Items>
             <Sidebar.ItemGroup>
-              <div className="relative mb-4 w-full">
-                <input
-                  className="w-full rounded-md border border-gray-300 p-2 pl-10 focus:outline-none focus:ring-2 focus:ring-slate-500"
-                  placeholder="Buscar tareas"
-                />
-                <FaSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-              </div>
+              <TextInput
+                icon={FaSearch}
+                placeholder="Buscar Tareas"
+                sizing="md"
+                color="gray"
+              />
               <Sidebar.Item href="#" icon={FaList}>
                 Todos
               </Sidebar.Item>
