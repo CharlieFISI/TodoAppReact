@@ -1,5 +1,13 @@
 import { Button, Checkbox, Label, Dropdown } from 'flowbite-react';
-import { FaEllipsisH, FaBars, FaEdit, FaTrashAlt } from 'react-icons/fa';
+import {
+  FaEllipsisH,
+  FaBars,
+  FaEdit,
+  FaTrashAlt,
+  FaMinus,
+  FaAngleDown,
+  FaAngleUp
+} from 'react-icons/fa';
 import { updateTodoStatus } from '../data';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
@@ -8,6 +16,19 @@ import { restrictToParentElement } from '@dnd-kit/modifiers';
 const TodoItem = (props) => {
   const completedClass =
     props.status === 'completed' ? 'bg-gray-200 bg-opacity-40' : 'bg-gray-100';
+
+  const getPriority = (priority) => {
+    switch (priority) {
+      case 'high':
+        return <FaAngleUp className="size-6 text-red-600" />;
+      case 'medium':
+        return <FaMinus className="size-5 text-yellow-500" />;
+      case 'low':
+        return <FaAngleDown className="size-6 text-green-600" />;
+      default:
+        return 'Desconocida';
+    }
+  };
 
   const handleCheckboxChange = async (e) => {
     const isChecked = e.target.checked;
@@ -38,9 +59,9 @@ const TodoItem = (props) => {
       style={style}
       ref={setNodeRef}
       {...attributes}
-      className={`my-1 flex w-full cursor-default items-center justify-between break-words rounded-md bg-white py-1 pl-px pr-2.5 shadow-sm ${completedClass}`}
+      className={`my-1 flex w-full cursor-default justify-between break-words rounded-md bg-white py-1 pl-px pr-2.5 shadow-sm ${completedClass}`}
     >
-      <div className="flex items-center">
+      <div className="flex items-center justify-items-start">
         <Button
           {...listeners}
           as="span"
@@ -49,7 +70,7 @@ const TodoItem = (props) => {
           <FaBars />
         </Button>
         <Checkbox
-          className={'mr-2 cursor-pointer focus:ring-transparent'}
+          className="mr-2 cursor-pointer focus:ring-transparent"
           defaultChecked={props.status === 'completed'}
           onChange={handleCheckboxChange}
           color="dark"
@@ -60,21 +81,25 @@ const TodoItem = (props) => {
           {props.description}
         </Label>
       </div>
-      <Dropdown
-        label={<FaEllipsisH className="text-gray-600" />}
-        dismissOnClick={false}
-        placement="right-start"
-        inline
-        arrowIcon={false}
-        className={'ml-2'}
-      >
-        <Dropdown.Item icon={FaEdit} onClick={() => alert('Editando')}>
-          Editar
-        </Dropdown.Item>
-        <Dropdown.Item icon={FaTrashAlt} onClick={() => alert('Eliminando')}>
-          Eliminar
-        </Dropdown.Item>
-      </Dropdown>
+      <div className="flex items-center justify-items-end space-x-3">
+        <Label className="grid size-6 place-content-center">
+          {getPriority(props.priority)}
+        </Label>
+        <Dropdown
+          label={<FaEllipsisH className="text-gray-600" />}
+          dismissOnClick={false}
+          placement="right-start"
+          inline
+          arrowIcon={false}
+        >
+          <Dropdown.Item icon={FaEdit} onClick={() => alert('Editando')}>
+            Editar
+          </Dropdown.Item>
+          <Dropdown.Item icon={FaTrashAlt} onClick={() => alert('Eliminando')}>
+            Eliminar
+          </Dropdown.Item>
+        </Dropdown>
+      </div>
     </div>
   );
 };
