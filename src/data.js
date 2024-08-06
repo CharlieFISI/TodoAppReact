@@ -8,8 +8,6 @@ const getData = async () => {
   if (result.error) {
     console.error('Error fetching data:', result.error);
     return 'error';
-  } else {
-    console.log('Data:', result.data);
   }
   return result;
 };
@@ -27,14 +25,16 @@ const updateTodoStatus = async (id, newStatus) => {
   return 'success';
 };
 
-const getTodoStatus = async (id) => {
-  const result = await supabase.from('todo-bd').select('status').eq('id', id);
+const createTodo = async (description, priority) => {
+  const { data, error } = await supabase
+    .from('todo-bd')
+    .insert([{ description, priority, status: 'pending' }]);
 
-  if (result.error) {
-    console.error('Error fetching status:', result.error);
+  if (error) {
+    console.error('Error creating todo:', error);
     return 'error';
   }
-  return result.data[0].status;
+  return data;
 };
 
-export { getData, updateTodoStatus, getTodoStatus };
+export { getData, updateTodoStatus, createTodo };
