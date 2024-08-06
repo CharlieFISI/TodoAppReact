@@ -38,6 +38,7 @@ const TodoList = ({ todos = [], setTodos = () => {} }) => {
             id={todo.id}
             description={todo.description}
             status={todo.status}
+            priority={todo.priority}
             onStatusChange={handleStatusChange}
           />
         ))}
