@@ -20,11 +20,11 @@ const TodoItem = (props) => {
   const getPriority = (priority) => {
     switch (priority) {
       case 'high':
-        return <FaAngleUp className="size-6 text-red-600" />;
+        return <FaAngleUp className="text-red-600 size-6" />;
       case 'medium':
-        return <FaMinus className="size-5 text-yellow-500" />;
+        return <FaMinus className="text-yellow-500 size-5" />;
       case 'low':
-        return <FaAngleDown className="size-6 text-green-600" />;
+        return <FaAngleDown className="text-green-600 size-6" />;
       default:
         return 'Desconocida';
     }
@@ -37,10 +37,9 @@ const TodoItem = (props) => {
     const result = await updateTodoStatus(props.id, newStatus);
 
     if (result === 'error') {
-      console.error('Error updating status');
-    } else {
-      props.onStatusChange(props.id, newStatus);
+      alert('Error actualizando la tarea');
     }
+    props.onStatusChange(props.id, newStatus);
   };
 
   const { attributes, listeners, setNodeRef, transform, transition } =
@@ -59,13 +58,13 @@ const TodoItem = (props) => {
       style={style}
       ref={setNodeRef}
       {...attributes}
-      className={`my-1 flex w-full cursor-default justify-between break-words rounded-md bg-white py-1 pl-px pr-2.5 shadow-sm ${completedClass}`}
+      className={`my-1 flex w-full cursor-default snap-center snap-normal justify-between break-words rounded-md bg-white py-1 pl-px pr-2.5 shadow-sm ${completedClass}`}
     >
       <div className="flex items-center justify-items-start">
         <Button
           {...listeners}
           as="span"
-          className="cursor-pointer border-none bg-transparent text-lg font-bold text-gray-400"
+          className="text-lg font-bold text-gray-400 bg-transparent border-none cursor-pointer hover:accent-black"
         >
           <FaBars />
         </Button>
@@ -81,7 +80,7 @@ const TodoItem = (props) => {
           {props.description}
         </Label>
       </div>
-      <div className="flex items-center justify-items-end space-x-3">
+      <div className="flex items-center space-x-3 justify-items-end">
         <Label className="grid size-6 place-content-center">
           {getPriority(props.priority)}
         </Label>
