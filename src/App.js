@@ -28,7 +28,7 @@ function App() {
         <TodoCounter todos={todoTasks} />
         <TodoList todos={todoTasks} setTodos={setTodoTasks} />
       </TodoContent>
-      <CreateTodoButton />
+      <CreateTodoButton setTodos={setTodoTasks} />
     </TodoBackground>
   );
 }
