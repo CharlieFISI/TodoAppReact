@@ -1,10 +1,10 @@
-import { closestCenter, DndContext } from '@dnd-kit/core';
 import TodoItem from './TodoItem';
 import {
   SortableContext,
   verticalListSortingStrategy,
   arrayMove
 } from '@dnd-kit/sortable';
+import { closestCenter, DndContext } from '@dnd-kit/core';
 
 const TodoList = ({ todos = [], setTodos = () => {} }) => {
   const handleStatusChange = (id, newStatus) => {
@@ -28,21 +28,27 @@ const TodoList = ({ todos = [], setTodos = () => {} }) => {
 
   return (
     <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-      <SortableContext
-        items={todos.map((todo) => todo.id)}
-        strategy={verticalListSortingStrategy}
-      >
-        {todos.map((todo) => (
-          <TodoItem
-            key={todo.id}
-            id={todo.id}
-            description={todo.description}
-            status={todo.status}
-            priority={todo.priority}
-            onStatusChange={handleStatusChange}
-          />
-        ))}
-      </SortableContext>
+      {todos.length > 0 ? (
+        <div className="max-h-screen scrollbar touch-pan-y snap-y snap-mandatory">
+          <SortableContext
+            items={todos.map((todo) => todo.id)}
+            strategy={verticalListSortingStrategy}
+          >
+            {todos.map((todo) => (
+              <TodoItem
+                key={todo.id}
+                id={todo.id}
+                description={todo.description}
+                status={todo.status}
+                priority={todo.priority}
+                onStatusChange={handleStatusChange}
+              />
+            ))}
+          </SortableContext>
+        </div>
+      ) : (
+        <div className="text-center text-gray-500">No hay tareas</div>
+      )}
     </DndContext>
   );
 };
