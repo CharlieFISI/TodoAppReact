@@ -3,7 +3,7 @@ import { Button, Modal, Label, TextInput, Select } from 'flowbite-react';
 import { FaPlus } from 'react-icons/fa';
 import { createTodo } from '../data';
 
-const CreateTodoButton = () => {
+const CreateTodoButton = ({ setTodos = () => {} }) => {
   const [openModal, setOpenModal] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const inputRef = useRef(null);
@@ -28,6 +28,12 @@ const CreateTodoButton = () => {
     if (result === 'error') {
       alert('Error creando la tarea');
     }
+
+    setTodos((prevTodos) => [
+      ...prevTodos,
+      { description, priority, status: 'pending' }
+    ]);
+
     inputRef.current.value = '';
     selectRef.current.value = 'low';
     setOpenModal(false);
