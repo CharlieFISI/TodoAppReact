@@ -13,11 +13,10 @@ function App() {
   useEffect(() => {
     const fetchData = async () => {
       const result = await getData();
-      if (result && result.data) {
-        setTodoTasks(result.data);
-      } else {
+      if (result === 'error') {
         console.error('No data found');
       }
+      setTodoTasks(result);
     };
     fetchData();
   }, []);
