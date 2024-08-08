@@ -1,15 +1,28 @@
 import supabase from './connection';
 
 const getData = async () => {
-  const result = await supabase
+  const { data, error } = await supabase
     .from('todo-bd')
     .select('*')
     .order('id', { ascending: true });
-  if (result.error) {
-    console.error('Error fetching data:', result.error);
+  if (error) {
+    console.error('Error fetching data:', error);
     return 'error';
   }
-  return result;
+  return data;
+};
+
+const updateTodo = async (id, newDescription, newPriority) => {
+  const { error } = await supabase
+    .from('todo-bd')
+    .update({ description: newDescription, priority: newPriority })
+    .eq('id', id);
+
+  if (error) {
+    console.error('Error updating todo:', error);
+    return 'error';
+  }
+  return 'success';
 };
 
 const updateTodoStatus = async (id, newStatus) => {
@@ -37,4 +50,14 @@ const createTodo = async (description, priority) => {
   return data;
 };
 
-export { getData, updateTodoStatus, createTodo };
+const deleteTodo = async (id) => {
+  const { error } = await supabase.from('todo-bd').delete().eq('id', id);
+
+  if (error) {
+    console.error('Error deleting todo:', error);
+    return 'error';
+  }
+  return 'success';
+};
+
+export { getData, updateTodo, updateTodoStatus, createTodo, deleteTodo };
