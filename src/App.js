@@ -10,16 +10,18 @@ import { useState, useEffect } from 'react';
 function App() {
   const [todoTasks, setTodoTasks] = useState([]);
 
+  const fetchData = async () => {
+    const result = await getData();
+    if (result === 'error') {
+      console.error('No data found');
+    }
+    setTodoTasks(result);
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
-      const result = await getData();
-      if (result === 'error') {
-        console.error('No data found');
-      }
-      setTodoTasks(result);
-    };
     fetchData();
   }, []);
+
   return (
     <TodoBackground>
       <TodoNav />
@@ -27,7 +29,7 @@ function App() {
         <TodoCounter todos={todoTasks} />
         <TodoList todos={todoTasks} setTodos={setTodoTasks} />
       </TodoContent>
-      <CreateTodoButton setTodos={setTodoTasks} />
+      <CreateTodoButton setTodos={setTodoTasks} fetchData={fetchData} />
     </TodoBackground>
   );
 }

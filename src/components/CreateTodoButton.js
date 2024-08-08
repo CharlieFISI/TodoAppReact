@@ -3,7 +3,7 @@ import { Button, Modal, Label, TextInput, Select } from 'flowbite-react';
 import { FaPlus } from 'react-icons/fa';
 import { createTodo } from '../data';
 
-const CreateTodoButton = ({ setTodos = () => {} }) => {
+const CreateTodoButton = ({ setTodos = () => {}, fetchData }) => {
   const [openModal, setOpenModal] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const inputRef = useRef(null);
@@ -36,6 +36,7 @@ const CreateTodoButton = ({ setTodos = () => {} }) => {
 
     inputRef.current.value = '';
     selectRef.current.value = 'low';
+    await fetchData();
     onCloseModal();
   };
 
