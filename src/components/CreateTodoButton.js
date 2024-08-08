@@ -18,7 +18,7 @@ const CreateTodoButton = ({ setTodos = () => {} }) => {
     const description = inputRef.current.value;
     const priority = selectRef.current.value;
 
-    if (!description || !priority) {
+    if (!description) {
       setErrorMessage('*Falta descripción');
       return;
     }
@@ -36,8 +36,7 @@ const CreateTodoButton = ({ setTodos = () => {} }) => {
 
     inputRef.current.value = '';
     selectRef.current.value = 'low';
-    setOpenModal(false);
-    setErrorMessage('');
+    onCloseModal();
   };
 
   return (
@@ -64,7 +63,7 @@ const CreateTodoButton = ({ setTodos = () => {} }) => {
               Añade una tarea
             </h3>
             <div>
-              <div className="block mb-2">
+              <div className="mb-2 block">
                 <Label htmlFor="description" value="Descripción de la tarea" />
               </div>
               <TextInput
@@ -76,7 +75,7 @@ const CreateTodoButton = ({ setTodos = () => {} }) => {
               />
             </div>
             <div>
-              <div className="block mb-2">
+              <div className="mb-2 block">
                 <Label
                   htmlFor="priority"
                   value="Seleccione la prioridad de la tarea"
