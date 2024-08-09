@@ -32,11 +32,11 @@ const TodoItem = (props) => {
   const getPriority = (priority) => {
     switch (priority) {
       case 'high':
-        return <FaAngleUp className="size-6 text-red-600" />;
+        return <FaAngleUp className="text-red-600 size-6" />;
       case 'medium':
-        return <FaMinus className="size-5 text-yellow-500" />;
+        return <FaMinus className="text-yellow-500 size-5" />;
       case 'low':
-        return <FaAngleDown className="size-6 text-green-600" />;
+        return <FaAngleDown className="text-green-600 size-6" />;
       default:
         return 'Desconocida';
     }
@@ -108,7 +108,7 @@ const TodoItem = (props) => {
             {...attributes}
             {...listeners}
             as="span"
-            className="cursor-move border-none bg-transparent text-lg font-bold text-gray-400 hover:accent-black focus:ring-transparent"
+            className="text-lg font-bold text-gray-400 bg-transparent border-none cursor-move hover:accent-black focus:ring-transparent"
           >
             <FaBars />
           </Button>
@@ -124,7 +124,7 @@ const TodoItem = (props) => {
             {props.description}
           </Label>
         </div>
-        <div className="flex items-center justify-items-end space-x-3">
+        <div className="flex items-center space-x-3 justify-items-end">
           <Label className="grid size-6 place-content-center">
             {getPriority(props.priority)}
           </Label>
@@ -146,6 +146,7 @@ const TodoItem = (props) => {
       </div>
       <Modal
         show={openModal}
+        size="md"
         initialFocus={inputRef}
         onClose={() => setOpenModal(false)}
         popup
@@ -157,7 +158,7 @@ const TodoItem = (props) => {
               Editar tarea
             </h3>
             <div>
-              <div className="mb-2 block">
+              <div className="block mb-2">
                 <Label htmlFor="description" value="Descripción de la tarea" />
               </div>
               <TextInput
@@ -169,7 +170,7 @@ const TodoItem = (props) => {
               />
             </div>
             <div>
-              <div className="mb-2 block">
+              <div className="block mb-2">
                 <Label
                   htmlFor="priority"
                   value="Seleccione la prioridad de la tarea"
