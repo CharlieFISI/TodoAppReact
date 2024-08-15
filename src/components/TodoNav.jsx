@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Sidebar, TextInput } from 'flowbite-react';
 import {
   FaBook,
@@ -16,15 +16,18 @@ import { useTodo } from '../hooks/useTodo';
 const TodoNav = () => {
   const [sidebarWidth, setSidebarWidth] = useState(true);
   const [search, setSearch] = useState('');
-  const { searchTodos, filterStatusTodos } = useTodo();
+  const { searchTodos, filterTodosStatus } = useTodo();
 
   const handleSearch = (e) => {
-    searchTodos(search);
     setSearch(e.target.value);
   };
 
+  useEffect(() => {
+    searchTodos(search);
+  }, [search, searchTodos]);
+
   return (
-    <div className="flex h-full flex-row bg-[#0080ff]">
+    <div className="flex h-full flex-row bg-[#f9fafb]">
       <div
         className={`transition-[width] duration-300 ${sidebarWidth ? 'w-64' : 'w-0'} overflow-hidden`}
       >
@@ -46,38 +49,38 @@ const TodoNav = () => {
               <Sidebar.Item
                 href="#"
                 icon={FaList}
-                onClick={() => filterStatusTodos('all')}
+                onClick={() => filterTodosStatus('all')}
               >
                 Todos
               </Sidebar.Item>
               <Sidebar.Item
                 href="#"
                 icon={FaCheck}
-                onClick={() => filterStatusTodos('completed')}
+                onClick={() => filterTodosStatus('completed')}
               >
                 Completados
               </Sidebar.Item>
               <Sidebar.Item
                 href="#"
                 icon={FaTimes}
-                onClick={() => filterStatusTodos('pending')}
+                onClick={() => filterTodosStatus('pending')}
               >
                 Pendientes
               </Sidebar.Item>
               <Sidebar.Collapse icon={FaFilter} label="Importancia">
                 <Sidebar.Item
                   href="#"
-                  onClick={() => filterStatusTodos('high')}
+                  onClick={() => filterTodosStatus('high')}
                 >
                   Alta
                 </Sidebar.Item>
                 <Sidebar.Item
                   href="#"
-                  onClick={() => filterStatusTodos('medium')}
+                  onClick={() => filterTodosStatus('medium')}
                 >
                   Media
                 </Sidebar.Item>
-                <Sidebar.Item href="#" onClick={() => filterStatusTodos('low')}>
+                <Sidebar.Item href="#" onClick={() => filterTodosStatus('low')}>
                   Baja
                 </Sidebar.Item>
               </Sidebar.Collapse>

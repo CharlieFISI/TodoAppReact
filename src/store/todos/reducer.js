@@ -63,8 +63,29 @@ export const deleteTodoAsync = createAsyncThunk(
   }
 );
 
+const filterAndSearchTodos = (todos, searchQuery, statusFilter) => {
+  let filteredTodos = todos;
+
+  if (searchQuery) {
+    filteredTodos = filteredTodos.filter((todo) =>
+      todo.description.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  }
+
+  if (statusFilter && statusFilter !== 'all') {
+    filteredTodos = filteredTodos.filter(
+      (todo) => todo.status === statusFilter
+    );
+  }
+
+  return filteredTodos;
+};
+
 const initialState = {
   todos: [],
+  todosFilter: [],
+  isSearchActive: false,
+  isFilterStatusActive: false,
   status: 'idle',
   error: null
 };
@@ -102,16 +123,22 @@ export const todoReducer = createSlice({
       state.todos = arrayMove(state.todos, oldIndex, newIndex);
     },
     searchTodosAction: (state, action) => {
-      return !action.payload
-        ? state
-        : state.filter((todo) =>
-            todo.description
-              .toLowerCase()
-              .includes(action.payload.toLowerCase())
-          );
+      state.isSearchActive = !!action.payload;
+      state.searchQuery = action.payload;
+      state.todosFilter = filterAndSearchTodos(
+        state.todos,
+        action.payload,
+        state.isFilterStatusActive ? state.statusFilter : 'all'
+      );
     },
     filterTodosStatusAction: (state, action) => {
-      return state.filter((todo) => todo.status === action.payload);
+      state.isFilterStatusActive = action.payload !== 'all';
+      state.statusFilter = action.payload;
+      state.todosFilter = filterAndSearchTodos(
+        state.todos,
+        state.isSearchActive ? state.searchQuery : '',
+        action.payload
+      );
     }
   },
   extraReducers: (builder) => {
@@ -144,7 +171,10 @@ export const todoReducer = createSlice({
   }
 });
 
-export const selectTodos = (state) => state.todos.todos;
+export const selectTodos = (state) =>
+  state.todos.isSearchActive || state.todos.isFilterStatusActive
+    ? state.todos.todosFilter
+    : state.todos.todos;
 export const getTodosStatus = (state) => state.todos.status;
 export const getTodosError = (state) => state.todos.error;
 
