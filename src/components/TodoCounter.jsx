@@ -1,6 +1,9 @@
 import { Progress } from 'flowbite-react';
+import { useAppSelector } from '../hooks/store';
+import { selectTodos } from '../store/todos/reducer';
 
-const TodoCounter = ({ todos }) => {
+const TodoCounter = () => {
+  const todos = useAppSelector(selectTodos);
   if (!todos) {
     return <div>Cargando...</div>;
   }

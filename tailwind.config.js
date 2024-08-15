@@ -14,6 +14,9 @@ module.exports = {
   plugins: [
     plugin(function ({ addUtilities }) {
       addUtilities({
+        '.break-anywhere': {
+          overflowWrap: 'anywhere'
+        },
         '.scrollbar': {
           overflowY: 'hidden',
           scrollbarWidth: 'thin',

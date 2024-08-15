@@ -12,7 +12,19 @@ const getData = async () => {
   return data;
 };
 
-const updateTodo = async (id, newDescription, newPriority) => {
+const createData = async (description, priority) => {
+  const { data, error } = await supabase
+    .from('todo-bd')
+    .insert([{ description, priority, status: 'pending' }]);
+
+  if (error) {
+    console.error('Error creating todo:', error);
+    return 'error';
+  }
+  return data;
+};
+
+const updateData = async (id, newDescription, newPriority) => {
   const { error } = await supabase
     .from('todo-bd')
     .update({ description: newDescription, priority: newPriority })
@@ -25,7 +37,7 @@ const updateTodo = async (id, newDescription, newPriority) => {
   return 'success';
 };
 
-const updateTodoStatus = async (id, newStatus) => {
+const updateDataStatus = async (id, newStatus) => {
   const { error } = await supabase
     .from('todo-bd')
     .update({ status: newStatus })
@@ -38,19 +50,7 @@ const updateTodoStatus = async (id, newStatus) => {
   return 'success';
 };
 
-const createTodo = async (description, priority) => {
-  const { data, error } = await supabase
-    .from('todo-bd')
-    .insert([{ description, priority, status: 'pending' }]);
-
-  if (error) {
-    console.error('Error creating todo:', error);
-    return 'error';
-  }
-  return data;
-};
-
-const deleteTodo = async (id) => {
+const deleteData = async (id) => {
   const { error } = await supabase.from('todo-bd').delete().eq('id', id);
 
   if (error) {
@@ -60,4 +60,4 @@ const deleteTodo = async (id) => {
   return 'success';
 };
 
-export { getData, updateTodo, updateTodoStatus, createTodo, deleteTodo };
+export { getData, updateData, updateDataStatus, createData, deleteData };

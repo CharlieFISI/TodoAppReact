@@ -1,13 +1,14 @@
 import { useRef, useState } from 'react';
 import { Button, Modal, Label, TextInput, Select } from 'flowbite-react';
 import { FaPlus } from 'react-icons/fa';
-import { createTodo } from '../data';
+import { useTodo } from '../hooks/useTodo';
 
-const CreateTodoButton = ({ setTodos = () => {}, fetchData }) => {
+const CreateTodoButton = () => {
   const [openModal, setOpenModal] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const inputRef = useRef(null);
   const selectRef = useRef(null);
+  const { addTodo } = useTodo();
 
   function onCloseModal() {
     setOpenModal(false);
@@ -23,20 +24,9 @@ const CreateTodoButton = ({ setTodos = () => {}, fetchData }) => {
       return;
     }
 
-    const result = await createTodo(description, priority);
-
-    if (result === 'error') {
-      alert('Error creando la tarea');
-    }
-
-    setTodos((prevTodos) => [
-      ...prevTodos,
-      { description, priority, status: 'pending' }
-    ]);
-
+    addTodo(description, priority);
     inputRef.current.value = '';
     selectRef.current.value = 'low';
-    await fetchData();
     onCloseModal();
   };
 
@@ -64,7 +54,7 @@ const CreateTodoButton = ({ setTodos = () => {}, fetchData }) => {
               Añade una tarea
             </h3>
             <div>
-              <div className="mb-2 block">
+              <div className="block mb-2">
                 <Label htmlFor="description" value="Descripción de la tarea" />
               </div>
               <TextInput
@@ -76,7 +66,7 @@ const CreateTodoButton = ({ setTodos = () => {}, fetchData }) => {
               />
             </div>
             <div>
-              <div className="mb-2 block">
+              <div className="block mb-2">
                 <Label
                   htmlFor="priority"
                   value="Seleccione la prioridad de la tarea"
