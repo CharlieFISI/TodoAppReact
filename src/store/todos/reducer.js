@@ -96,31 +96,58 @@ export const todoReducer = createSlice({
   reducers: {
     addTodoAction: (state, action) => {
       const newTodo = { id: nanoid(), ...action.payload };
+      if (state.isSearchActive || state.isFilterStatusActive)
+        state.todosFilter = [...state.todosFilter, newTodo];
       state.todos = [...state.todos, newTodo];
     },
     editTodoAction: (state, action) => {
+      const updateTodo = (todo) => {
+        todo.description = action.payload.description;
+        todo.priority = action.payload.priority;
+      };
+
+      if (state.isSearchActive || state.isFilterStatusActive) {
+        const existingTodoFilter = state.todosFilter.find(
+          (todo) => todo.id === action.payload.id
+        );
+        if (existingTodoFilter) {
+          updateTodo(existingTodoFilter);
+        }
+      }
+
       const existingTodo = state.todos.find(
         (todo) => todo.id === action.payload.id
       );
       if (existingTodo) {
-        existingTodo.description = action.payload.description;
-        existingTodo.priority = action.payload.priority;
+        updateTodo(existingTodo);
       }
     },
     statusTodoChangeAction: (state, action) => {
+      const updateTodo = (todo) => {
+        todo.status = action.payload.status;
+      };
+
+      if (state.isSearchActive || state.isFilterStatusActive) {
+        const existingTodoFilter = state.todosFilter.find(
+          (todo) => todo.id === action.payload.id
+        );
+        if (existingTodoFilter) {
+          updateTodo(existingTodoFilter);
+        }
+      }
+
       const existingTodo = state.todos.find(
         (todo) => todo.id === action.payload.id
       );
       if (existingTodo) {
-        existingTodo.status = action.payload.status;
+        updateTodo(existingTodo);
       }
-    },
-    deleteTodoAction: (state, action) => {
-      state.todos = state.todos.filter((todo) => todo.id !== action.payload);
     },
     reorderTodosAction: (state, action) => {
       const { oldIndex, newIndex } = action.payload;
-      state.todos = arrayMove(state.todos, oldIndex, newIndex);
+      state.isSearchActive || state.isFilterStatusActive
+        ? (state.todosFilter = arrayMove(state.todosFilter, oldIndex, newIndex))
+        : (state.todos = arrayMove(state.todos, oldIndex, newIndex));
     },
     searchTodosAction: (state, action) => {
       state.isSearchActive = !!action.payload;
@@ -154,9 +181,23 @@ export const todoReducer = createSlice({
         state.status = 'failed';
         state.error = action.error.message;
       })
+      .addCase(addTodoAsync.fulfilled, (state, action) => {
+        if (!action.payload) {
+          console.log('Error creating todo');
+          console.log(action.payload);
+          return;
+        }
+      })
       .addCase(editTodoAsync.fulfilled, (state, action) => {
         if (!action.payload) {
           console.log('Error updating todo');
+          console.log(action.payload);
+          return;
+        }
+      })
+      .addCase(statusTodoChangeAsync.fulfilled, (state, action) => {
+        if (!action.payload) {
+          console.log('Error updating status');
           console.log(action.payload);
           return;
         }
