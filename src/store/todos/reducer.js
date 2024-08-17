@@ -63,22 +63,22 @@ export const deleteTodoAsync = createAsyncThunk(
   }
 );
 
-const filterAndSearchTodos = (todos, searchQuery, statusFilter) => {
-  let filteredTodos = todos;
-
-  if (searchQuery) {
-    filteredTodos = filteredTodos.filter((todo) =>
-      todo.description.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-  }
-
-  if (statusFilter && statusFilter !== 'all') {
-    filteredTodos = filteredTodos.filter(
-      (todo) => todo.status === statusFilter
-    );
-  }
-
-  return filteredTodos;
+const filterAndSearchTodos = (
+  todos,
+  searchQuery,
+  statusFilter,
+  priorityFilter
+) => {
+  return todos.filter((todo) => {
+    const matchesSearch = searchQuery
+      ? todo.description.includes(searchQuery)
+      : true;
+    const matchesStatus =
+      statusFilter !== 'all' ? todo.status === statusFilter : true;
+    const matchesPriority =
+      priorityFilter !== 'all' ? todo.priority === priorityFilter : true;
+    return matchesSearch && matchesStatus && matchesPriority;
+  });
 };
 
 const initialState = {
@@ -86,6 +86,7 @@ const initialState = {
   todosFilter: [],
   isSearchActive: false,
   isFilterStatusActive: false,
+  isFilterPriorityActive: false,
   status: 'idle',
   error: null
 };
@@ -163,7 +164,8 @@ export const todoReducer = createSlice({
       state.todosFilter = filterAndSearchTodos(
         state.todos,
         action.payload,
-        state.isFilterStatusActive ? state.statusFilter : 'all'
+        state.isFilterStatusActive ? state.statusFilter : 'all',
+        state.isFilterPriorityActive ? state.priorityFilter : 'all'
       );
     },
     filterTodosStatusAction: (state, action) => {
@@ -172,6 +174,17 @@ export const todoReducer = createSlice({
       state.todosFilter = filterAndSearchTodos(
         state.todos,
         state.isSearchActive ? state.searchQuery : '',
+        action.payload,
+        state.isFilterPriorityActive ? state.priorityFilter : 'all'
+      );
+    },
+    filterTodosPriorityAction: (state, action) => {
+      state.isFilterPriorityActive = action.payload !== 'all';
+      state.priorityFilter = action.payload;
+      state.todosFilter = filterAndSearchTodos(
+        state.todos,
+        state.isSearchActive ? state.searchQuery : '',
+        state.isFilterStatusActive ? state.statusFilter : 'all',
         action.payload
       );
     }
@@ -221,7 +234,9 @@ export const todoReducer = createSlice({
 });
 
 export const selectTodos = (state) =>
-  state.todos.isSearchActive || state.todos.isFilterStatusActive
+  state.todos.isSearchActive ||
+  state.todos.isFilterStatusActive ||
+  state.todos.isFilterPriorityActive
     ? state.todos.todosFilter
     : state.todos.todos;
 export const getTodosStatus = (state) => state.todos.status;
@@ -236,5 +251,6 @@ export const {
   deleteTodoAction,
   reorderTodosAction,
   searchTodosAction,
-  filterTodosStatusAction
+  filterTodosStatusAction,
+  filterTodosPriorityAction
 } = todoReducer.actions;

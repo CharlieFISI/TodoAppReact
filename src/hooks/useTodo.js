@@ -9,7 +9,8 @@ import {
   deleteTodoAsync,
   deleteTodoAction,
   searchTodosAction,
-  filterTodosStatusAction
+  filterTodosStatusAction,
+  filterTodosPriorityAction
 } from '../store/todos/reducer';
 import { useAppDispatch } from './store';
 
@@ -69,6 +70,10 @@ export const useTodo = () => {
     dispatch(filterTodosStatusAction(status));
   };
 
+  const filterTodosPriority = async (priority) => {
+    dispatch(filterTodosPriorityAction(priority));
+  };
+
   return {
     getTodos,
     addTodo,
@@ -76,6 +81,7 @@ export const useTodo = () => {
     statusChangeTodo,
     deleteTodo,
     searchTodos,
-    filterTodosStatus
+    filterTodosStatus,
+    filterTodosPriority
   };
 };
