@@ -15,7 +15,8 @@ const getData = async () => {
 const createData = async (description, priority) => {
   const { data, error } = await supabase
     .from('todo-bd')
-    .insert([{ description, priority, status: 'pending' }]);
+    .insert([{ description, priority, status: 'pending' }])
+    .select('id, description, priority, status');
 
   if (error) {
     console.error('Error creating todo:', error);
@@ -25,16 +26,17 @@ const createData = async (description, priority) => {
 };
 
 const updateData = async (id, newDescription, newPriority) => {
-  const { error } = await supabase
+  const { data, error } = await supabase
     .from('todo-bd')
     .update({ description: newDescription, priority: newPriority })
-    .eq('id', id);
+    .eq('id', id)
+    .select('id, description, priority');
 
   if (error) {
     console.error('Error updating todo:', error);
     return 'error';
   }
-  return 'success';
+  return data;
 };
 
 const updateDataStatus = async (id, newStatus) => {
