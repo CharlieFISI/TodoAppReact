@@ -143,6 +143,14 @@ export const todoReducer = createSlice({
         updateTodo(existingTodo);
       }
     },
+    deleteTodoAction: (state, action) => {
+      if (state.isSearchActive || state.isFilterStatusActive) {
+        state.todosFilter = state.todosFilter.filter(
+          (todo) => todo.id !== action.payload
+        );
+      }
+      state.todos = state.todos.filter((todo) => todo.id !== action.payload);
+    },
     reorderTodosAction: (state, action) => {
       const { oldIndex, newIndex } = action.payload;
       state.isSearchActive || state.isFilterStatusActive
