@@ -16,7 +16,7 @@ import { useTodo } from '../hooks/useTodo';
 const TodoNav = () => {
   const [sidebarWidth, setSidebarWidth] = useState(true);
   const [search, setSearch] = useState('');
-  const { searchTodos, filterTodosStatus } = useTodo();
+  const { searchTodos, filterTodosStatus, filterTodosPriority } = useTodo();
 
   const handleSearch = (e) => {
     setSearch(e.target.value);
@@ -49,38 +49,59 @@ const TodoNav = () => {
               <Sidebar.Item
                 href="#"
                 icon={FaList}
-                onClick={() => filterTodosStatus('all')}
+                onClick={() => {
+                  filterTodosStatus('all');
+                  filterTodosPriority('all');
+                  setSearch('');
+                }}
               >
                 Todos
               </Sidebar.Item>
               <Sidebar.Item
                 href="#"
                 icon={FaCheck}
-                onClick={() => filterTodosStatus('completed')}
+                onClick={() => {
+                  filterTodosStatus('completed');
+                  filterTodosPriority('all');
+                  setSearch('');
+                }}
               >
                 Completados
               </Sidebar.Item>
               <Sidebar.Item
                 href="#"
                 icon={FaTimes}
-                onClick={() => filterTodosStatus('pending')}
+                onClick={() => {
+                  filterTodosStatus('pending');
+                  filterTodosPriority('all');
+                  setSearch('');
+                }}
               >
                 Pendientes
               </Sidebar.Item>
               <Sidebar.Collapse icon={FaFilter} label="Importancia">
                 <Sidebar.Item
                   href="#"
-                  onClick={() => filterTodosStatus('high')}
+                  onClick={() => {
+                    filterTodosPriority('high');
+                  }}
                 >
                   Alta
                 </Sidebar.Item>
                 <Sidebar.Item
                   href="#"
-                  onClick={() => filterTodosStatus('medium')}
+                  onClick={() => {
+                    filterTodosPriority('medium');
+                  }}
                 >
                   Media
                 </Sidebar.Item>
-                <Sidebar.Item href="#" onClick={() => filterTodosStatus('low')}>
+                <Sidebar.Item
+                  href="#"
+                  onClick={() => {
+                    filterTodosPriority('low');
+                  }}
+                >
                   Baja
                 </Sidebar.Item>
               </Sidebar.Collapse>
