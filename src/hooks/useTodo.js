@@ -28,9 +28,9 @@ export const useTodo = () => {
       addTodoAsync({ description, priority })
     ).unwrap();
     if (resultAction === 'error') {
-      return alert('Error al editar la tarea');
+      return alert('Error al agregar la tarea');
     }
-    dispatch(addTodoAction({ description, priority }));
+    dispatch(addTodoAction(...resultAction));
   };
 
   const editTodo = async (id, description, priority) => {
