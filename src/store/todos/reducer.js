@@ -95,7 +95,7 @@ export const todoReducer = createSlice({
   initialState,
   reducers: {
     addTodoAction: (state, action) => {
-      const newTodo = { id: nanoid(), ...action.payload };
+      const newTodo = { ...action.payload };
       if (state.isSearchActive || state.isFilterStatusActive)
         state.todosFilter = [...state.todosFilter, newTodo];
       state.todos = [...state.todos, newTodo];
