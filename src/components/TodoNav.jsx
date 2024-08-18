@@ -16,6 +16,8 @@ import { useTodo } from '../hooks/useTodo';
 const TodoNav = () => {
   const [sidebarWidth, setSidebarWidth] = useState(true);
   const [search, setSearch] = useState('');
+  const [statusFilter, setStatusFilter] = useState('all');
+  const [priorityFilter, setPriorityFilter] = useState('all');
   const { searchTodos, filterTodosStatus, filterTodosPriority } = useTodo();
 
   const handleSearch = (e) => {
@@ -42,16 +44,23 @@ const TodoNav = () => {
                 placeholder="Buscar Tareas"
                 sizing="sm"
                 color="gray"
-                className="mr-4"
                 value={search}
                 onChange={handleSearch}
               />
               <Sidebar.Item
                 href="#"
                 icon={FaList}
+                className={
+                  statusFilter === 'all' && priorityFilter === 'all'
+                    ? 'bg-gray-200 font-semibold'
+                    : ''
+                }
+                active={statusFilter === 'all' && priorityFilter === 'all'}
                 onClick={() => {
                   filterTodosStatus('all');
                   filterTodosPriority('all');
+                  setStatusFilter('all');
+                  setPriorityFilter('all');
                   setSearch('');
                 }}
               >
@@ -60,9 +69,17 @@ const TodoNav = () => {
               <Sidebar.Item
                 href="#"
                 icon={FaCheck}
+                className={
+                  statusFilter === 'completed'
+                    ? 'bg-gray-200 font-semibold'
+                    : ''
+                }
+                active={statusFilter === 'completed'}
                 onClick={() => {
                   filterTodosStatus('completed');
                   filterTodosPriority('all');
+                  setStatusFilter('completed');
+                  setPriorityFilter('all');
                   setSearch('');
                 }}
               >
@@ -71,9 +88,15 @@ const TodoNav = () => {
               <Sidebar.Item
                 href="#"
                 icon={FaTimes}
+                className={
+                  statusFilter === 'pending' ? 'bg-gray-200 font-semibold' : ''
+                }
+                active={statusFilter === 'pending'}
                 onClick={() => {
                   filterTodosStatus('pending');
                   filterTodosPriority('all');
+                  setStatusFilter('pending');
+                  setPriorityFilter('all');
                   setSearch('');
                 }}
               >
@@ -82,24 +105,38 @@ const TodoNav = () => {
               <Sidebar.Collapse icon={FaFilter} label="Importancia">
                 <Sidebar.Item
                   href="#"
+                  className={
+                    priorityFilter === 'high' ? 'bg-gray-200 font-semibold' : ''
+                  }
                   onClick={() => {
                     filterTodosPriority('high');
+                    setPriorityFilter('high');
                   }}
                 >
                   Alta
                 </Sidebar.Item>
                 <Sidebar.Item
                   href="#"
+                  className={
+                    priorityFilter === 'medium'
+                      ? 'bg-gray-200 font-semibold'
+                      : ''
+                  }
                   onClick={() => {
                     filterTodosPriority('medium');
+                    setPriorityFilter('medium');
                   }}
                 >
                   Media
                 </Sidebar.Item>
                 <Sidebar.Item
                   href="#"
+                  className={
+                    priorityFilter === 'low' ? 'bg-gray-200 font-semibold' : ''
+                  }
                   onClick={() => {
                     filterTodosPriority('low');
+                    setPriorityFilter('low');
                   }}
                 >
                   Baja

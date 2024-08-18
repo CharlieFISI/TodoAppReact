@@ -71,7 +71,7 @@ const filterAndSearchTodos = (
 ) => {
   return todos.filter((todo) => {
     const matchesSearch = searchQuery
-      ? todo.description.includes(searchQuery)
+      ? todo.description.toLowerCase().includes(searchQuery.toLocaleLowerCase())
       : true;
     const matchesStatus =
       statusFilter !== 'all' ? todo.status === statusFilter : true;
